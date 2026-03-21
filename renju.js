@@ -38,8 +38,8 @@ function findWinner(board) {
         [-1, 1]
     ];
 
-    for (let column = 0; column < 19; column++) {
-        for (let row = 0; row < 19; row++) {
+    for (let row = 0; row < 19; row++) {
+        for (let column = 0; column < 19; column++) {
             const color = board[row][column];
             if (color === 0) continue;
 
