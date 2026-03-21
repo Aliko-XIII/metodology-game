@@ -25,6 +25,11 @@ function solve() {
     }
 }
 
+function isInside(row, col) {
+    return row >= 0 && row < 19 &&
+           col >= 0 && col < 19;
+}
+
 function findWinner(board) {
     const directions = [
         [0, 1],
@@ -43,7 +48,7 @@ function findWinner(board) {
                 let currRow = row;
                 let currColumn = column;
 
-                while (currRow >= 0 && currRow < 19 && currColumn >= 0 && currColumn < 19 && board[currRow][currColumn] === color) {
+                while (isInside(currRow, currColumn) && board[currRow][currColumn] === color) {
                     count++;
                     currRow += directionRow;
                     currColumn += directionColumn;
@@ -52,13 +57,13 @@ function findWinner(board) {
                 if (count === 5) {
                     const prevRow = row - directionRow;
                     const prevColumn = column - directionColumn;
-                    if (prevRow >= 0 && prevRow < 19 && prevColumn >= 0 && prevColumn < 19 && board[prevRow][prevColumn] === color) {
+                    if (isInside(prevRow, prevColumn) && board[prevRow][prevColumn] === color) {
                         continue;
                     }
 
                     const nextRow = row + 5 * directionRow;
                     const nextColumn = column + 5 * directionColumn;
-                    if (nextRow >= 0 && nextRow < 19 && nextColumn >= 0 && nextColumn < 19 && board[nextRow][nextColumn] === color) {
+                    if (isInside(nextRow, nextColumn) && board[nextRow][nextColumn] === color) {
                         continue;
                     }
 
