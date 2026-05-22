@@ -1,5 +1,8 @@
 const fs = require('fs');
 
+const BOARD_SIZE = 19;
+const WIN_LENGTH = 5;
+
 function solve() {
     const rawInput = fs.readFileSync(0, 'utf8');
     const input = rawInput.trim().split(/\s+/).filter(Boolean);
@@ -12,9 +15,9 @@ function solve() {
 
     for (let t = 0; t < testCases; t++) {
         const board = [];
-        for (let i = 0; i < 19; i++) {
+        for (let i = 0; i < BOARD_SIZE; i++) {
             board[i] = [];
-            for (let j = 0; j < 19; j++) {
+            for (let j = 0; j < BOARD_SIZE; j++) {
                 if (idx >= input.length) {
                     throw new Error(`Missing board value at test case ${t + 1}, row ${i + 1}, column ${j + 1}`);
                 }
@@ -43,8 +46,8 @@ function solve() {
 }
 
 function isWithinBounds(row, col) {
-    return row >= 0 && row < 19 &&
-           col >= 0 && col < 19;
+    return row >= 0 && row < BOARD_SIZE &&
+           col >= 0 && col < BOARD_SIZE;
 }
 
 function findWinner(board) {
@@ -55,8 +58,8 @@ function findWinner(board) {
         [-1, 1]
     ];
 
-    for (let row = 0; row < 19; row++) {
-        for (let column = 0; column < 19; column++) {
+    for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let column = 0; column < BOARD_SIZE; column++) {
             const color = board[row][column];
             if (color === 0) continue;
 
@@ -71,15 +74,15 @@ function findWinner(board) {
                     currColumn += directionColumn;
                 }
 
-                if (count === 5) {
+                if (count === WIN_LENGTH) {
                     const prevRow = row - directionRow;
                     const prevColumn = column - directionColumn;
                     if (isWithinBounds(prevRow, prevColumn) && board[prevRow][prevColumn] === color) {
                         continue;
                     }
 
-                    const nextRow = row + 5 * directionRow;
-                    const nextColumn = column + 5 * directionColumn;
+                    const nextRow = row + WIN_LENGTH * directionRow;
+                    const nextColumn = column + WIN_LENGTH * directionColumn;
                     if (isWithinBounds(nextRow, nextColumn) && board[nextRow][nextColumn] === color) {
                         continue;
                     }
