@@ -2,16 +2,29 @@ const fs = require('fs');
 
 function solve() {
     const rawInput = fs.readFileSync(0, 'utf8');
-    const input = rawInput.trim().split(/\s+/);
+    const input = rawInput.trim().split(/\s+/).filter(Boolean);
     let idx = 0;
     const testCases = parseInt(input[idx++]);
+
+    if (!Number.isInteger(testCases) || testCases < 1) {
+        throw new Error('Invalid test case count');
+    }
 
     for (let t = 0; t < testCases; t++) {
         const board = [];
         for (let i = 0; i < 19; i++) {
             board[i] = [];
             for (let j = 0; j < 19; j++) {
-                board[i][j] = parseInt(input[idx++]);
+                if (idx >= input.length) {
+                    throw new Error(`Missing board value at test case ${t + 1}, row ${i + 1}, column ${j + 1}`);
+                }
+
+                const value = Number(input[idx++]);
+                if (!Number.isInteger(value) || value < 0 || value > 2) {
+                    throw new Error(`Invalid board value at test case ${t + 1}, row ${i + 1}, column ${j + 1}`);
+                }
+
+                board[i][j] = value;
             }
         }
 
@@ -22,6 +35,10 @@ function solve() {
         } else {
             console.log(0);
         }
+    }
+
+    if (idx < input.length) {
+        throw new Error('Extra input detected after the last test case');
     }
 }
 
